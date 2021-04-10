@@ -1,0 +1,118 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!--style-->
+  {% load static %}
+  <style>
+    .card {
+
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5),
+        0 6px 20px 0 rgba(0, 0, 0, 0.39);
+      background: rgb(248, 226, 226);
+      margin-bottom: 3%;
+      border-radius: 10px;
+      padding: 2%;
+      overflow: auto;
+      resize: both;
+      text-overflow: ellipsis;
+      letter-spacing: 2px;
+    }
+
+    /* .card:hover {
+      background: lightblue;
+    } */
+
+    .submit_form {
+
+      text-align: center;
+      padding: 3%;
+      background-color: rgb(248, 226, 226);
+      border-radius: 5px;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4),
+        0 6px 20px 0 rgba(0, 0, 0, 0.36);
+    }
+
+    .row {
+      background: transparent;
+    }
+
+    .container-fluid {
+      /* background-image: url('{% static "Image/memo-2331062_1920.jpg" %}'); */
+      /* background-color:grey; */
+      background-color: pink;
+
+
+
+      background-size: cover;
+      background-attachment: fixed;
+
+      font-family: 'Oswald', sans-serif;
+    }
+  </style>
+
+</head>
+
+<body class="container-fluid">
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info">
+    <strong>{{message}}</strong>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <center class="row " style="background-color: black;">
+    <h1 style="color:white;">DAILY ROUTINE LIST</h1>
+    <hr />
+  </center>
+
+  <div class="row">
+
+    <div class="col-md-8">
+
+      {% for i in list %}
+      <div class="card">
+        <center><b>{{i.title}}</b></center>
+        <hr />
+        {{i.date}}
+        <hr />
+        {{i.details}}
+        <br />
+        <br />
+        <form action="/delete/{{i.id}}" method="POST" style=" padding-right: 4%; padding-bottom: 1%;">
+          {% csrf_token %}
+          <button value="remove" type="submit" class="btn btn-success" style="float: right;"><span
+              class="glyphicon glyphicon-trash"></span> &nbsp; remove</button>
+        </form>
+      </div>
+      {% endfor%}
+    </div>
+    <div class="col-md-1"> </div>
+    <div class="col-md-3">
+      <div class="submit_form">
+        <form method="POST" style="border-radius: 1px;">
+          {% csrf_token %}
+          {{forms|crispy}}
+          <center>
+            <input type="submit" class="btn btn-success" value="submit" />
+          </center>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
